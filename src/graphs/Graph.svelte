@@ -28,6 +28,3 @@
   <div bind:this={graph}></div>
   <button on:click={newGraph}>Run</button>
 </div>
-
-
-
