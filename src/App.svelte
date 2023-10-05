@@ -14,6 +14,7 @@
   <div class="topbar">
       <button on:click={runCode}>Run</button>
   </div>
+
   <div class="content">
     <div class="editor">
       <Editor bind:content={content}/>
