@@ -3,6 +3,7 @@
   import type {Writable} from "svelte/store";
   import Editor from "./editor/Editor.svelte";
   import Graph from "./graphs/Graph.svelte";
+  import Button from "./components/Button.svelte";
   let content: Writable<string>;
   const runCode = () => {
     eval($content)
@@ -12,8 +13,9 @@
 <main>
 
   <div class="topbar">
-      <button on:click={runCode}>Run</button>
+    <Button onclick={runCode}>Run</Button>
   </div>
+
   <div class="content">
     <div class="editor">
       <Editor bind:content={content}/>
@@ -59,13 +61,5 @@
   .graph {
     flex-grow: 1;
   }
-
-
-
-
-
-
-
-
 
 </style>
