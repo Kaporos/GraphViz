@@ -2,10 +2,10 @@
   
   import { onMount } from 'svelte';
   import { ForceGraph } from './ForceGraph'
-  import miserables_data from './miserables.json'
   import { generateRandomLadderGraph } from './GraphGen'
   import {writable} from "svelte/store";
   import type {Writable} from "svelte/store";
+  import {ScriptGraph} from "./api";
 
 
   //@ts-ignore
@@ -24,6 +24,10 @@
     }
     [svgNode, nodeProperties] = ForceGraph(currentGraph, {nodeGroup: d => d.group});
     graph.appendChild(svgNode);
+  }
+
+  ScriptGraph.color_callback = (id, color) => {
+    $colors[id] = color;
   }
 
   onMount(() => {

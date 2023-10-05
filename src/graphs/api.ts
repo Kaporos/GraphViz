@@ -1,23 +1,15 @@
-export class OurGraph implements GraphNode {
-    static color_callback: () => void
-
-    color(color: string) {
-        OurGraph.color_callback()
-    }
-
-
-}
-
-
-let nodes = [new OurGraph()]
-
-
-const handler = {
-    get(target: any, props: any, receiver: any) {
-        return Reflect.get(target, props, receiver)
+export class ScriptGraph {
+    static color_callback: (id: number, color: string) => void;
+    static color(id: number, color: string) {
+        this.color_callback(id, color)
     }
 }
 
-window.nodes = new Proxy(nodes, handler)
+function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-export  const Initialised = true;
+window.graph = ScriptGraph
+window.sleep = sleep
+
+export const Initialised = true;

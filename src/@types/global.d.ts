@@ -1,9 +1,10 @@
-declare interface GraphNode {
-    color(color: string): void
+declare class Graph {
+    color(id: number, color: string): void
 }
 
 
-interface Window { nodes: GraphNode[]; }
+interface Window { graph: Graph; sleep: (time: number) => void}
 
 
-window.nodes = window.nodes || {};
+window.graph = window.graph || {};
+window.sleep = window.sleep || {};

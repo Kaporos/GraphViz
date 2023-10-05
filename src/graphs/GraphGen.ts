@@ -11,7 +11,7 @@ export function generateRandomLadderGraph() {
       links: []
     };
     
-    let graph = ladder(Graph, Math.floor(Math.random()*20) + 10);
+    let graph = ladder(Graph, 20);
 
     // Transform nodes
     graph.forEachNode((node, attributes) => {
