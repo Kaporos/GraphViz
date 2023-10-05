@@ -51,6 +51,7 @@ export function ForceGraph({
   
     // Construct the forces.
     const forceNode = d3.forceManyBody();
+
     const forceLink = d3.forceLink(links).id(({index: i}) => N[i]);
     if (nodeStrength !== undefined) forceNode.strength(nodeStrength);
     if (linkStrength !== undefined) forceLink.strength(linkStrength);
