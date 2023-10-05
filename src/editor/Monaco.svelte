@@ -52,7 +52,6 @@
 
         var libUri = "ts:filename/facts.d.ts";
 
-
         Monaco.languages.typescript.javascriptDefaults.addExtraLib(libSource, libUri);
         //@ts-ignore
         if (!window.didMonacoInit) {

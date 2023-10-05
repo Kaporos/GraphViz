@@ -12,28 +12,39 @@
 
   let svgNode: any;
   let nodeProperties: {attr: (name: string, callback: (d: {id: number}) => void) => void};
+  let edgeProperties: {attr: (name: string, callback: (d: {id: number}) => void) => void};
   let graph: any;
-  let colors: Writable<{[nodeId: number]: string}> = writable({});
+  let node_colors: Writable<{[nodeId: string]: string}> = writable({});
+  let edges_colors: Writable<{[nodeId: string]: string}> = writable({});
 
   function newGraph() {
-    let currentGraph = generateRandomLadderGraph()
-    //@ts-ignore
-    window.currentGraph = currentGraph
+    let [currentGraph, graphologyGraph] = generateRandomLadderGraph()
+    window.context = new ScriptGraph(graphologyGraph)
     if (svgNode) {
       graph.removeChild(svgNode);
     }
-    [svgNode, nodeProperties] = ForceGraph(currentGraph, {nodeGroup: d => d.group});
+    [svgNode, nodeProperties, edgeProperties] = ForceGraph(currentGraph, {nodeGroup: d => d.group});
     graph.appendChild(svgNode);
+
   }
 
-  ScriptGraph.color_callback = (id, color) => {
-    $colors[id] = color;
+  ScriptGraph.color_node_callback = (id, color) => {
+    $node_colors[id] = color;
+  }
+
+  ScriptGraph.color_edge_callback = (id, color) => {
+    $edges_colors[id] = color;
   }
 
   onMount(() => {
     newGraph()
-    colors.subscribe((colors) => {
+    node_colors.subscribe((colors) => {
       nodeProperties.attr("fill", (d) => {
+        return colors[d.id] || "black"
+      })
+    })
+    edges_colors.subscribe((colors) => {
+      edgeProperties.attr("stroke", (d) => {
         return colors[d.id] || "black"
       })
     })

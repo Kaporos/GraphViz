@@ -24,11 +24,12 @@ export function generateRandomLadderGraph() {
     // Transform edges
     graph.forEachEdge((e, a, source, target) => {
       dataObject["links"].push({
+        id: e,
         source: source,
         target: target,
-        value : 1
+        value : 50,
       });
     });
-    return dataObject;
+    return [dataObject, graph];
 }
 

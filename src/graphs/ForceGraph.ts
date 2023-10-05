@@ -31,6 +31,7 @@ export function ForceGraph({
   } = {}) {
     // Compute values.
     const N = d3.map(nodes, nodeId).map(intern);
+    const E = d3.map(links, l => l.id).map(intern);
     const LS = d3.map(links, linkSource).map(intern);
     const LT = d3.map(links, linkTarget).map(intern);
     if (nodeTitle === undefined) nodeTitle = (_, i) => N[i];
@@ -41,7 +42,7 @@ export function ForceGraph({
   
     // Replace the input nodes and links with mutable objects for the simulation.
     nodes = d3.map(nodes, (_, i) => ({id: N[i]}));
-    links = d3.map(links, (_, i) => ({source: LS[i], target: LT[i]}));
+    links = d3.map(links, (_, i) => ({source: LS[i], target: LT[i], id: E[i]}));
   
     // Compute default domains.
     if (G && nodeGroups === undefined) nodeGroups = d3.sort(G);
@@ -137,5 +138,5 @@ export function ForceGraph({
         .on("end", dragended);
     }
   
-    return [Object.assign(svg.node(), {scales: {color}}), node];
+    return [Object.assign(svg.node(), {scales: {color}}), node, link];
   }
