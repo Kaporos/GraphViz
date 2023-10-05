@@ -7,7 +7,7 @@
     import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
     import {writable} from "svelte/store";
     import libSource from "../@types/global.d.ts?raw"
-    export let content = writable("Hello world bitch");
+    export let content = writable("console.log('hello world')");
 
     let divEl: HTMLDivElement;
     let editor: any;
@@ -54,11 +54,16 @@
 
 
         Monaco.languages.typescript.javascriptDefaults.addExtraLib(libSource, libUri);
-        Monaco.editor.createModel(libSource, "typescript", Monaco.Uri.parse(libUri));
+        //@ts-ignore
+        if (!window.didMonacoInit) {
+            Monaco.editor.createModel(libSource, "typescript", Monaco.Uri.parse(libUri));
+            //@ts-ignore
+            window.didMonacoInit = true;
+        }
 
 
         editor = Monaco.editor.create(divEl, {
-            value: "console.log('hello world')",
+            value: $content,
             language: "typescript",
             theme: "vs-dark",
             readOnly: false,
