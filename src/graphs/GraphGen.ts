@@ -1,5 +1,7 @@
-import Graph from 'graphology';
+import Graph, { UndirectedGraph } from 'graphology';
 import ladder from 'graphology-generators/classic/ladder';
+import { graphOptions } from './optionsObject';
+import hexagon from './graph-examples/hexagon.json'
 
 export function generateRandomLadderGraph() {
 
@@ -10,9 +12,23 @@ export function generateRandomLadderGraph() {
       nodes: [],
       links: []
     };
-    
-    let graph = ladder(Graph, 20);
 
+    let graph = new UndirectedGraph();
+
+    for (let i= 0; i < hexagon.nodes.length; i++) {
+      console.log(hexagon.nodes[i]);
+      graph.addNode(hexagon.nodes[i].id);
+    }
+    for (let i= 0; i < hexagon.links.length; i++) {
+      console.log(hexagon.links[i]);
+      graph.mergeEdge(hexagon.links[i].source, hexagon.links[i].target);
+    }
+
+    if (graphOptions.ladder === true) {
+      console.log("Generating ladder graph");
+      graph = ladder(Graph, graphOptions.nodeCount / 2);
+    } 
+    
     // Transform nodes
     graph.forEachNode((node, attributes) => {
       dataObject["nodes"].push({

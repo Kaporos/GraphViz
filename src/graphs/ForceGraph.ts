@@ -16,7 +16,7 @@ export function ForceGraph({
     nodeStrokeWidth = 1.5, // node stroke width, in pixels
     nodeStrokeOpacity = 1, // node stroke opacity
     nodeRadius = 10, // node radius, in pixels
-    nodeStrength,
+    nodeStrength = -500,
     linkSource = ({source}) => source, // given d in links, returns a node identifier string
     linkTarget = ({target}) => target, // given d in links, returns a node identifier string
     linkStroke = "#999", // link stroke color
@@ -45,7 +45,7 @@ export function ForceGraph({
   
     // Replace the input nodes and links with mutable objects for the simulation.
     nodes = d3.map(nodes, (_, i) => ({id: N[i]}));
-    links = d3.map(links, (_, i) => ({source: LS[i], target: LT[i]}));
+    links = d3.map(links, (_, i) => ({source: LS[i], target: LT[i], value: POOP[i]}));
   
     // Compute default domains.
     if (G && nodeGroups === undefined) nodeGroups = d3.sort(G);
@@ -57,6 +57,8 @@ export function ForceGraph({
     const forceNode = d3.forceManyBody();
 
     const forceLink = d3.forceLink(links).id(({index: i}) => N[i]);
+    
+    forceLink.distance(d => d.value);
     if (nodeStrength !== undefined) forceNode.strength(nodeStrength);
     if (linkStrength !== undefined) forceLink.strength(linkStrength);
   
@@ -99,6 +101,7 @@ export function ForceGraph({
         .join("text")
         .attr("fill", "red")
         .attr("font-size", 20)
+        .attr("style", "text-anchor: middle;")
         .attr("dy", 0)  // Adjust this value to position the text above or below the line
         // .text(links => links.value);
 
