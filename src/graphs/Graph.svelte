@@ -25,7 +25,6 @@
     }
     [svgNode, nodeProperties, edgeProperties] = ForceGraph(currentGraph, {nodeGroup: d => d.group});
     graph.appendChild(svgNode);
-
   }
 
   ScriptGraph.color_node_callback = (id, color) => {

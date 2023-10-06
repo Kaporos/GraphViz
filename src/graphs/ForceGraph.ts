@@ -31,7 +31,6 @@ export function ForceGraph({
   } = {}) {
     // Compute values.
     const N = d3.map(nodes, nodeId).map(intern);
-    const E = d3.map(links, l => l.id).map(intern);
     const LS = d3.map(links, linkSource).map(intern);
     const LT = d3.map(links, linkTarget).map(intern);
     if (nodeTitle === undefined) nodeTitle = (_, i) => N[i];
@@ -39,10 +38,14 @@ export function ForceGraph({
     const G = nodeGroup == null ? null : d3.map(nodes, nodeGroup).map(intern);
     const W = typeof linkStrokeWidth !== "function" ? null : d3.map(links, linkStrokeWidth);
     const L = typeof linkStroke !== "function" ? null : d3.map(links, linkStroke);
+    
+    let linkValue = d => d.value;
+    
+    const POOP = d3.map(links, linkValue).map(intern);
   
     // Replace the input nodes and links with mutable objects for the simulation.
     nodes = d3.map(nodes, (_, i) => ({id: N[i]}));
-    links = d3.map(links, (_, i) => ({source: LS[i], target: LT[i], id: E[i]}));
+    links = d3.map(links, (_, i) => ({source: LS[i], target: LT[i]}));
   
     // Compute default domains.
     if (G && nodeGroups === undefined) nodeGroups = d3.sort(G);
@@ -89,8 +92,21 @@ export function ForceGraph({
         .attr("r", nodeRadius)
         .call(drag(simulation));
 
+    const linkText = svg.append("g")
+        .attr("id", "link-text")
+        .selectAll("text")
+        .data(links)
+        .join("text")
+        .attr("fill", "red")
+        .attr("font-size", 20)
+        .attr("dy", 0)  // Adjust this value to position the text above or below the line
+        // .text(links => links.value);
+
+    linkText.text(({index: i}) => POOP[i]);
+
     //@ts-ignore
     window.node = node
+
   
     if (W) link.attr("stroke-width", ({index: i}) => W[i]);
     if (L) link.attr("stroke", ({index: i}) => L[i]);
@@ -112,7 +128,11 @@ export function ForceGraph({
       node
         .attr("cx", d => d.x)
         .attr("cy", d => d.y);
-    }
+
+      linkText
+        .attr("x", d => (d.source.x + d.target.x) / 2)
+        .attr("y", d => (d.source.y + d.target.y) / 2);
+      }
   
     function drag(simulation) {    
       function dragstarted(event) {

@@ -3,6 +3,7 @@
   import type {Writable} from "svelte/store";
   import Editor from "./editor/Editor.svelte";
   import Graph from "./graphs/Graph.svelte";
+  import GraphOptions from "./graphs/GraphOptions.svelte";
   import Button from "./components/Button.svelte";
   let content: Writable<string>;
   const runCode = () => {
@@ -22,6 +23,7 @@
     </div>
     <div class="graph">
       <Graph/>
+      <GraphOptions/>
     </div>
   </div>
 
