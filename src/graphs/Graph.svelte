@@ -57,5 +57,5 @@
 
 <div>
   <div bind:this={graph}></div>
-  <button on:click={newGraph}>Run</button>
+  <button on:click={newGraph}>Generate</button>
 </div>

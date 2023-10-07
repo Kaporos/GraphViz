@@ -1,5 +1,6 @@
 import Graph, { UndirectedGraph } from 'graphology';
-import ladder from 'graphology-generators/classic/ladder';
+import { ladder, complete, path } from 'graphology-generators/classic';
+import { erdosRenyi } from 'graphology-generators/random';
 import { graphOptions } from './optionsObject';
 import hexagon from './graph-examples/hexagon.json'
 
@@ -24,11 +25,27 @@ export function generateRandomLadderGraph() {
       graph.mergeEdge(hexagon.links[i].source, hexagon.links[i].target);
     }
 
-    if (graphOptions.ladder === true) {
+    if (graphOptions.graphType.ladder === true) {
       console.log("Generating ladder graph");
       graph = ladder(Graph, graphOptions.nodeCount / 2);
     } 
+
+    if (graphOptions.graphType.complete === true) {
+      console.log("Generating ladder graph");
+      graph = complete(Graph, graphOptions.nodeCount);
+    } 
+
+    if (graphOptions.graphType.path === true) {
+      console.log("Generating ladder graph");
+      graph = path(Graph, graphOptions.nodeCount);
+    } 
     
+    if (graphOptions.graphType.erdosRenyi === true) {
+      console.log("Generating ladder graph");
+      console.log(graphOptions.nodeCount);
+      graph = erdosRenyi(Graph, {order: parseInt(graphOptions.nodeCount), probability: 0.1});
+    }
+
     // Transform nodes
     graph.forEachNode((node, attributes) => {
       dataObject["nodes"].push({
